@@ -2,41 +2,25 @@
 #define SRC_PLANNER_PATH_SEARCHING_INCLUDE_PATH_SEARCHING_KINO_ASTAR
 
 #pragma region include
-#pragma region include::project
+#pragma region include_project
 #include "plan_env/grid_map.hh"
-#pragma endregion include::project
-#pragma region include::third
-
+#pragma endregion include_project
+#pragma region include_third
 #include <pcl/kdtree/kdtree_flann.h>
-#include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include <visualization_msgs/MarkerArray.h>
-
-#include <Eigen/Eigen>
-#include <boost/make_shared.hpp>
-#pragma endregion include::third
-#pragma region include::standard
-#include <limits>
-#include <queue>
+#pragma endregion include_third
+#pragma region include_standard
 #include <unordered_map>
-#pragma endregion include::standard
+#pragma endregion include_standard
 #pragma endregion include
 
+#pragma region namespace
 namespace path_searching {
 
-typedef pcl::PointXYZ PCLPoint;
-typedef pcl::PointCloud<PCLPoint> PCLPointCloud;
-typedef pcl::KdTreeFLANN<PCLPoint> KdTree;
-
-enum class NodeStateEnum {
-  NOT_EXPANDED,
-  IN_OPEN_LIST,
-  IN_CLOSE_LIST,
-};
-
-class KinoAstarNode {
+#pragma region class
+class KinoAStarNode {
  public:
-  KinoAstarNode() {
+  KinoAStarNode() {
     input = Eigen::Vector3d::Zero();
     f_cost = std::numeric_limits<double>::infinity();
     g_cost = std::numeric_limits<double>::infinity();
@@ -44,8 +28,16 @@ class KinoAstarNode {
     node_state = NodeStateEnum::NOT_EXPANDED;
     parent = nullptr;
   }
-  ~KinoAstarNode() = default;
+  ~KinoAStarNode() = default;
 
+ public:
+  enum class NodeStateEnum {
+    NOT_EXPANDED,
+    IN_OPEN_LIST,
+    IN_CLOSE_LIST,
+  };
+
+ public:
   Eigen::Vector3d position;
   Eigen::Vector3d velocity;
   Eigen::Vector3d input;
@@ -55,20 +47,26 @@ class KinoAstarNode {
   double g_cost;
   double duration;
   NodeStateEnum node_state;
-  KinoAstarNode* parent;
+  KinoAStarNode* parent;
 
-};  // class KinoAstarNode
-typedef KinoAstarNode* KinoAstarNodePtr;
+};  // class KinoAStarNode
+#pragma endregion class
 
-class KinoAstarNodeComparator {
+#pragma region class
+class KinoAStarNodeComparator {
  public:
-  bool operator()(KinoAstarNodePtr node1, KinoAstarNodePtr node2) {
-    return node1->f_cost > node2->f_cost;
+  KinoAStarNodeComparator() = default;
+  ~KinoAStarNodeComparator() = default;
+
+ public:
+  bool operator()(KinoAStarNode* node1, KinoAStarNode* node2) {
+    return (node1->f_cost > node2->f_cost);
   }
-};  // class KinoAstarNodeComparator
+};  // class KinoAStarNodeComparator
+#pragma endregion class
 
 template <typename T>
-struct vector3i_hash : public std::unary_function<T, size_t> {
+struct vector3i_hash {
   size_t operator()(const T& vector) const {
     size_t seed = 0;
     for (size_t i = 0; i < vector.size(); ++i) {
@@ -81,18 +79,19 @@ struct vector3i_hash : public std::unary_function<T, size_t> {
   }
 };  // struct vector3i_hash
 
-class KinoAstarNodeHashTable {
+#pragma region class
+class KinoAStarNodeHashTable {
  private:
-  std::unordered_map<Eigen::Vector3i, KinoAstarNodePtr,
+  std::unordered_map<Eigen::Vector3i, KinoAStarNode*,
                      vector3i_hash<Eigen::Vector3i>>
       data_table_;
 
  public:
-  void insert(Eigen::Vector3i index, KinoAstarNodePtr node) {
+  void insert(Eigen::Vector3i index, KinoAStarNode* node) {
     data_table_.insert(std::make_pair(index, node));
   }
 
-  KinoAstarNodePtr find(Eigen::Vector3i index) {
+  KinoAStarNode* find(Eigen::Vector3i index) {
     auto iter = data_table_.find(index);
     if (iter != data_table_.end()) {
       return iter->second;
@@ -101,18 +100,19 @@ class KinoAstarNodeHashTable {
     }
   }
 
-  void erase(Eigen::Vector3i index) { data_table_.erase(index); }
+  inline void clear() { data_table_.clear(); }
 
-  void clear() { data_table_.clear(); }
+  KinoAStarNodeHashTable() = default;
+  ~KinoAStarNodeHashTable() = default;
 
-  KinoAstarNodeHashTable() = default;
-  ~KinoAstarNodeHashTable() = default;
+};  // class KinoAStarNodeHashTable
+#pragma endregion class
 
-};  // class KinoAstarNodeHashTable
-class KinoAstar {
+#pragma region class
+class KinoAStar {
  public:
-  KinoAstar() = default;
-  ~KinoAstar();
+  KinoAStar() = default;
+  ~KinoAStar();
   void setParam(ros::NodeHandle& nh);
   void init();
   void setGridMap(GridMap::Ptr& grid_map);
@@ -126,16 +126,16 @@ class KinoAstar {
   void visEllipsoid(std::vector<Eigen::Vector3d>& path_nodes_list,
                     std::vector<Eigen::Matrix3d>& rot_list);
 
-  typedef std::shared_ptr<KinoAstar> Ptr;
+  typedef std::shared_ptr<KinoAStar> Ptr;
 
  private:
   /* main data structure */
-  std::priority_queue<KinoAstarNodePtr, std::vector<KinoAstarNodePtr>,
-                      KinoAstarNodeComparator>
+  std::priority_queue<KinoAStarNode*, std::vector<KinoAStarNode*>,
+                      KinoAStarNodeComparator>
       open_list_;
-  KinoAstarNodeHashTable close_list_;
-  KinoAstarNodeHashTable expanded_list_;
-  std::vector<KinoAstarNodePtr> path_node_pool_;
+  KinoAStarNodeHashTable close_list_;
+  KinoAStarNodeHashTable expanded_list_;
+  std::vector<KinoAStarNode*> path_node_pool_;
   std::vector<Eigen::Matrix3d> rot_list;
 
   /* main search parameters */
@@ -176,7 +176,7 @@ class KinoAstar {
   GridMap::Ptr grid_map_;
   /* main map parameters: cloud map */
   std::vector<Eigen::Vector3d> obs_;
-  KdTree kdtree_;
+  pcl::KdTreeFLANN<pcl::PointXYZ> kdtree_;
   ros::Subscriber local_cloud_sub_;
 
   /* main helper functions */
@@ -189,11 +189,11 @@ class KinoAstar {
   bool computeShotTraj(Eigen::Vector3d x1, Eigen::Vector3d v1,
                        Eigen::Vector3d x2, Eigen::Vector3d v2,
                        double optimal_time);
-  std::vector<KinoAstarNodePtr> retrievePath(
-      KinoAstarNodePtr end_node, std::vector<Eigen::Vector3d>& path_nodes_list);
-  void samplePath(std::vector<KinoAstarNodePtr> path_pool,
+  std::vector<KinoAStarNode*> retrievePath(
+      KinoAStarNode* end_node, std::vector<Eigen::Vector3d>& path_nodes_list);
+  void samplePath(std::vector<KinoAStarNode*> path_pool,
                   std::vector<Eigen::Vector3d>& path);
-  void sampleEllipsoid(std::vector<KinoAstarNodePtr> path_pool,
+  void sampleEllipsoid(std::vector<KinoAStarNode*> path_pool,
                        std::vector<Eigen::Vector3d>& path,
                        std::vector<Eigen::Matrix3d>& rot_list);
   void StateTransit(Eigen::Matrix<double, 6, 1>& x0,
@@ -203,9 +203,11 @@ class KinoAstar {
   /* main se3 helper functions */
   void localCloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg);
   bool isCollisionFree(Eigen::Vector3d pt, Eigen::Vector3d acc);
-  PCLPointCloud toPCL(const std::vector<Eigen::Vector3d>& obs);
+  pcl::PointCloud<pcl::PointXYZ> toPCL(const std::vector<Eigen::Vector3d>& obs);
 
-};  // class KinoAstar
+};  // class KinoAStar
+#pragma endregion class
 
 }  // namespace path_searching
+#pragma endregion namespace
 #endif /* SRC_PLANNER_PATH_SEARCHING_INCLUDE_PATH_SEARCHING_KINO_ASTAR */

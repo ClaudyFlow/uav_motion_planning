@@ -4,8 +4,7 @@
 #include <ros/ros.h>
 
 #include <Eigen/Eigen>
-#include <traj_utils/poly_traj.hpp>
-#include <vector>
+#include "traj_utils/poly_traj.hpp"
 
 using namespace std;
 

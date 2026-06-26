@@ -6,8 +6,6 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud.h>
 
-#include <iostream>
-
 ros::Publisher pub1;
 ros::Publisher pub2;
 

@@ -1,5 +1,14 @@
+#pragma region include
+#pragma region include::project
 #include "path_searching/kino_astar.hh"
-#include "plan_env/grid_map.hh"
+#pragma endregion include::project
+#pragma region include::third
+
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "test_kino_astar_node");
@@ -8,15 +17,15 @@ int main(int argc, char** argv) {
   GridMap::Ptr grid_map = std::make_shared<GridMap>();
   grid_map->initMap(nh);
 
-  path_searching::KinoAstar::Ptr kino_astar_;
-  kino_astar_ = std::make_shared<path_searching::KinoAstar>();
+  path_searching::KinoAStar::Ptr kino_astar_;
+  kino_astar_ = std::make_shared<path_searching::KinoAStar>();
 
   kino_astar_->setParam(nh);
-  cout << "KinoAstar parameters set" << endl;
+  cout << "KinoAStar parameters set" << endl;
   kino_astar_->setGridMap(grid_map);
   cout << "Grid map set" << endl;
   kino_astar_->init();
-  cout << "KinoAstar initialized" << endl;
+  cout << "KinoAStar initialized" << endl;
   Eigen::Vector3d start_pt(0, 0, 1.0);
   Eigen::Vector3d start_vel(1, 1, 0);
   Eigen::Vector3d end_pt(5, 5, 0.8);

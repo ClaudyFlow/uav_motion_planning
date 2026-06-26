@@ -1,8 +1,5 @@
 #include "quadrotor_simulator/Quadrotor.h"
-
-#include <ros/ros.h>
-
-#include <Eigen/Geometry>
+#include <Eigen/Eigen>
 #include <boost/bind.hpp>
 #include <iostream>
 

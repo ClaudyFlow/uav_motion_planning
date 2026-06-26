@@ -5,29 +5,27 @@ find_package(Eigen3 REQUIRED)
 find_package(OsqpEigen REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
+    roscpp
+    rospy
+    std_msgs
 )
 
-
-
 catkin_package(
- INCLUDE_DIRS include
- LIBRARIES traj_optimization
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+    INCLUDE_DIRS include
+    LIBRARIES traj_optimization
+    #  CATKIN_DEPENDS roscpp rospy std_msgs
+    #  DEPENDS system_lib
 )
 
 include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-  ${EIGEN3_INCLUDE_DIR}
+    include
+    ${catkin_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
 )
 
 add_library(traj_optimization
-  src/minimum_control.cpp)
+    src/minimum_control.cc)
 
 target_link_libraries(traj_optimization
-  ${catkin_LIBRARIES}
-  OsqpEigen::OsqpEigen)
+    ${catkin_LIBRARIES}
+    OsqpEigen::OsqpEigen)

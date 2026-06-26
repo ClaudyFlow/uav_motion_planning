@@ -2,21 +2,18 @@
 #define SRC_PLANNER_PATH_SEARCHING_INCLUDE_PATH_SEARCHING_RRT_STAR
 
 #pragma region include
-#pragma region include::project
+#pragma region include_project
 #include "kdtree/kdtree.hh"
 #include "plan_env/grid_map.hh"
-#pragma endregion include::project
-#pragma region include::third
-#include <ros/ros.h>
+#pragma endregion include_project
+#pragma region include_third
 #include <visualization_msgs/Marker.h>
 
-#include <Eigen/Eigen>
-#pragma endregion include::third
-#pragma region include::standard
-#include <limits>
+#pragma endregion include_third
+#pragma region include_standard
 #include <random>
 #include <unordered_set>
-#pragma endregion include::standard
+#pragma endregion include_standard
 #pragma endregion include
 
 namespace path_searching {
@@ -34,13 +31,12 @@ class RRTStarNode {
   }
   ~RRTStarNode() {};
 };  // class RRTStarNode
-typedef RRTStarNode* RRTStarNodePtr;
 
 class RRTStar {
  private:
   /* main data structure */
   kdtree* kdtree_;
-  std::vector<RRTStarNodePtr> path_node_pool_;
+  std::vector<RRTStarNode*> path_node_pool_;
   std::vector<Eigen::Vector3d> optimal_path_;
 
   /* main search parameters */
@@ -74,10 +70,9 @@ class RRTStar {
                        double step_length);
   bool isCollisionFree(Eigen::Vector3d from, Eigen::Vector3d to,
                        double map_resolution);
-  RRTStarNodePtr ChooseParent(Eigen::Vector3d x_new);
-  void ReWireTree(RRTStarNodePtr& new_node);
-  void retrievePath(RRTStarNodePtr end_node,
-                    std::vector<Eigen::Vector3d>& path);
+  RRTStarNode* ChooseParent(Eigen::Vector3d x_new);
+  void ReWireTree(RRTStarNode*& new_node);
+  void retrievePath(RRTStarNode* end_node, std::vector<Eigen::Vector3d>& path);
   void visFeasiblePath(std::vector<Eigen::Vector3d> path);
 
  public:

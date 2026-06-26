@@ -9,7 +9,7 @@
 #include <std_msgs/Bool.h>
 #include <tf/transform_datatypes.h>
 
-#include <Eigen/Geometry>
+#include <Eigen/Eigen>
 
 class SO3ControlNodelet : public nodelet::Nodelet {
  public:

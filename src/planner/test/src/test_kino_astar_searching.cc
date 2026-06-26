@@ -1,10 +1,16 @@
-#include <ros/ros.h>
-#include <visualization_msgs/Marker.h>
-
+#pragma region include
+#pragma region include::project
 #include "path_searching/kino_astar.hh"
-#include "plan_env/grid_map.hh"
+#pragma endregion include::project
+#pragma region include::third
 
-path_searching::KinoAstar::Ptr kino_astar_;
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
+
+path_searching::KinoAStar::Ptr kino_astar_;
 
 ros::Subscriber goal_sub;
 ros::Subscriber odom_sub;
@@ -82,7 +88,7 @@ int main(int argc, char** argv) {
   GridMap::Ptr grid_map = std::make_shared<GridMap>();
   grid_map->initMap(nh);
 
-  kino_astar_ = std::make_shared<path_searching::KinoAstar>();
+  kino_astar_ = std::make_shared<path_searching::KinoAStar>();
 
   kino_astar_->setParam(nh);
   kino_astar_->setGridMap(grid_map);

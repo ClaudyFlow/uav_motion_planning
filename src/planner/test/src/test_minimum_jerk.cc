@@ -1,7 +1,15 @@
-#include <traj_optimization/minimum_control.h>
-
+#pragma region include
+#pragma region include::project
 #include "path_searching/rrt_star.hh"
-#include "plan_env/grid_map.hh"
+#include "traj_optimization/minimum_control.hh"
+#pragma endregion include::project
+#pragma region include::third
+
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
 
 path_searching::RRTStar::Ptr rrt_star_;
 traj_optimization::MinimumControl::Ptr optimizer_;

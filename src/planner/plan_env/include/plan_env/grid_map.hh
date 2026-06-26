@@ -2,12 +2,12 @@
 #define SRC_PLANNER_PLAN_ENV_INCLUDE_PLAN_ENV_GRID_MAP
 
 #pragma region include
-#pragma region include::header
-#pragma endregion include::header
-#pragma region include::project
-#include "plan_env/raycast.hh"
-#pragma endregion include::project
-#pragma region include::third
+#pragma region include_header
+#pragma endregion include_header
+#pragma region include_project
+
+#pragma endregion include_project
+#pragma region include_third
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <message_filters/subscriber.h>
@@ -19,17 +19,15 @@
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <ros/ros.h>
-#include <visualization_msgs/Marker.h>
+
 
 #include <Eigen/Eigen>
-#include <Eigen/StdVector>
-#pragma endregion include::third
-#pragma region include::standard
-#include <iostream>
+#pragma endregion include_third
+#pragma region include_standard
 #include <queue>
 #include <random>
 #include <tuple>
-#pragma endregion include::standard
+#pragma endregion include_standard
 #pragma endregion include
 
 #define logit(x) (log((x) / (1 - (x))))

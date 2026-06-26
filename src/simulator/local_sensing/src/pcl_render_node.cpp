@@ -1,7 +1,4 @@
 #include <fstream>
-#include <iostream>
-#include <vector>
-// include ros dep.
 #include <dynamic_reconfigure/server.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/TransformStamped.h>

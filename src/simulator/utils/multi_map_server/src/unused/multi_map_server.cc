@@ -9,8 +9,6 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/PointCloud.h>
 
-#include <iostream>
-
 using namespace arma;
 using namespace std;
 #define MAX_MAP_CNT 25

@@ -1,12 +1,9 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/point_cloud.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 
 #include <algorithm>
-#include <iostream>
-#include <vector>
 
 #include "maps.hpp"
 

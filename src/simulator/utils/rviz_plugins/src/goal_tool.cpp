@@ -31,7 +31,6 @@
 
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_listener.h>
-
 #include "rviz/display_context.h"
 #include "rviz/properties/string_property.h"
 

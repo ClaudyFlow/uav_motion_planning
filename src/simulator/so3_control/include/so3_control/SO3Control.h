@@ -1,7 +1,7 @@
 #ifndef __SO3_CONTROL_H__
 #define __SO3_CONTROL_H__
 
-#include <Eigen/Geometry>
+#include <Eigen/Eigen>
 
 class SO3Control {
  public:

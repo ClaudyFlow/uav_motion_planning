@@ -6,8 +6,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <nav_msgs/Odometry.h>
 
-#include <Eigen/Dense>
-#include <Eigen/Geometry>
+#include <Eigen/Eigen>
 #include <cmath>
 
 namespace uav_utils {

@@ -1,7 +1,16 @@
-#include <ros/ros.h>
-
+#pragma region include
+#pragma region include::project
 #include "path_searching/astar.hh"
-#include "plan_env/grid_map.hh"
+#pragma endregion include::project
+#pragma region include::third
+
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
+
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "test_astar_node");
   ros::NodeHandle nh;
@@ -9,15 +18,15 @@ int main(int argc, char** argv) {
   GridMap::Ptr grid_map = std::make_shared<GridMap>();
   grid_map->initMap(nh);
 
-  path_searching::Astar::Ptr astar_;
-  astar_ = std::make_shared<path_searching::Astar>();
+  std::shared_ptr<path_searching::AStar> astar_;
+  astar_ = std::make_shared<path_searching::AStar>();
 
   astar_->setParam(nh);
-  cout << "Astar parameters set" << endl;
+  cout << "AStar parameters set" << endl;
   astar_->setGridMap(grid_map);
   cout << "Grid map set" << endl;
   astar_->init();
-  cout << "Astar initialized" << endl;
+  cout << "AStar initialized" << endl;
   Eigen::Vector3d start_pt(0, 0, 0);
   Eigen::Vector3d end_pt(10, 10, 1);
   std::vector<Eigen::Vector3d> path;

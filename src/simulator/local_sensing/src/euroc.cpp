@@ -12,12 +12,10 @@
 #include <pcl/io/ply_io.h>
 #include <ros/ros.h>
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Eigen>
 #include <fstream>
-#include <iostream>
 #include <opencv2/core/eigen.hpp>
 #include <opencv2/opencv.hpp>
-#include <vector>
 
 #include "depth_render.cuh"
 #include "opencv2/highgui/highgui.hpp"

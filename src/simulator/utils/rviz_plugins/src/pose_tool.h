@@ -31,7 +31,6 @@
 #define RVIZ_POSE_TOOL_H
 
 #include <OGRE/OgreVector3.h>
-#include <ros/ros.h>
 
 #include <QCursor>
 

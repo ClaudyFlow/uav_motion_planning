@@ -12,16 +12,11 @@
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <ros/ros.h>
-#include <visualization_msgs/Marker.h>
 
 #include <Eigen/Eigen>
-#include <Eigen/StdVector>
-#include <iostream>
 #include <queue>
 #include <random>
 #include <tuple>
-
-#include "plan_env/raycast.hh"
 
 #define logit(x) (log((x) / (1 - (x))))
 

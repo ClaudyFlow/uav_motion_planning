@@ -5,8 +5,6 @@
 #include <ros/ros.h>
 #include <tf/tf.h>
 
-#include <iostream>
-
 using namespace std;
 
 class Map2D {

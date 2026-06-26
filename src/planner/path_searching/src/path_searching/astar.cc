@@ -1,39 +1,33 @@
 #pragma region include
-#pragma region include::header
+#pragma region include_header
 #include "path_searching/astar.hh"
-#pragma endregion include::header
-#pragma region include::project
+#pragma endregion include_header
+#pragma region include_project
 
-#pragma endregion include::project
-#pragma region include::third
-#include <ros/ros.h>
-#pragma endregion include::third
-#pragma region include::standard
+#pragma endregion include_project
+#pragma region include_third
 
-#pragma endregion include::standard
+#pragma endregion include_third
+#pragma region include_standard
+
+#pragma endregion include_standard
 #pragma endregion include
 
 namespace path_searching {
-Astar::~Astar() {
-  for (int i = 0; i < allocated_node_num_;
-       i++)  // free memory for path_node_pool_
-  {
-    delete path_node_pool_[i];
-  }
-}
-void Astar::setParam(ros::NodeHandle& nh) {
+
+void AStar::setParam(ros::NodeHandle& nh) {
   nh.param("astar/resolution", resolution_, 0.1);
   nh.param("astar/lambda_heu", lambda_, 1.0);
   nh.param("astar/allocated_node_num", allocated_node_num_, 100000);
 }
 
-void Astar::init() {
+void AStar::init() {
   this->inv_resolution_ = 1.0 / resolution_;
   this->tie_breaker_ = 1.0 + 1e-4;  // default value
   path_node_pool_.resize(
       allocated_node_num_);  // allocate memory for path_node_pool_
   for (int i = 0; i < allocated_node_num_; i++) {
-    path_node_pool_[i] = new PathNode();
+    path_node_pool_[i] = new AStarNode();
   }
 
   if (!grid_map_) {
@@ -52,7 +46,7 @@ void Astar::init() {
   std::cout << "allocated_node_num: " << allocated_node_num_ << std::endl;
 }
 
-int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
+int AStar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
                   std::vector<Eigen::Vector3d>& path) {
   // if end_pt is out of map, return NO_PATH_FOUND
   ros::Time start_time = ros::Time::now();
@@ -61,12 +55,12 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
     return NO_PATH_FOUND;
   }
   // push start_node into open_list
-  PathNodePtr start_node = path_node_pool_[use_node_num_];  // bug fixed
+  AStarNode* start_node = path_node_pool_[use_node_num_];  // bug fixed
   start_node->g_cost = 0.0;
   start_node->position = start_pt;
   start_node->parent = nullptr;
   start_node->f_cost = lambda_ * getDiagonalHeu(start_pt, end_pt);
-  start_node->node_state = NodeStateEnum::IN_OPEN_LIST;
+  start_node->node_state = AStarNode::NodeStateEnum::IN_OPEN_LIST;
 
   open_list_.push(start_node);
   expanded_nodes_.insert(start_node->position, start_node);
@@ -75,9 +69,9 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
   while (!open_list_.empty()) {
     // pop node from open_list with lowest f_cost
     // and add it into close_list
-    PathNodePtr current_node = open_list_.top();
+    AStarNode* current_node = open_list_.top();
     open_list_.pop();
-    current_node->node_state = NodeStateEnum::IN_CLOSE_LIST;
+    current_node->node_state = AStarNode::NodeStateEnum::IN_CLOSE_LIST;
     close_list_.insert(current_node->position, current_node);
 
     // if current_node is end_pt, retrieve path and return success
@@ -88,7 +82,7 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
       std::cout << "reached end_pt" << std::endl;
       std::cout << "total_time: " << (end_time - start_time).toSec()
                 << " seconds" << std::endl;
-      PathNodePtr end_node = current_node;
+      AStarNode* end_node = current_node;
       std::cout << "use_node_num: " << use_node_num_ << std::endl;
       std::cout << "total_cost:" << end_node->g_cost << std::endl;
       retrievePath(end_node, path);
@@ -123,10 +117,10 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
 
           double delta_pos = Eigen::Vector3d(x, y, z).norm();
           double tmp_g_cost = current_node->g_cost + delta_pos;
-          PathNodePtr tmp_node = expanded_nodes_.find(neighbor_pos);
+          AStarNode* tmp_node = expanded_nodes_.find(neighbor_pos);
 
           if (tmp_node == nullptr) {
-            PathNodePtr neighbor_node = path_node_pool_[use_node_num_];
+            AStarNode* neighbor_node = path_node_pool_[use_node_num_];
             use_node_num_ += 1;
             neighbor_node->g_cost = tmp_g_cost;
             neighbor_node->position = neighbor_pos;
@@ -134,7 +128,7 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
             neighbor_node->f_cost =
                 neighbor_node->g_cost +
                 lambda_ * getDiagonalHeu(neighbor_pos, end_pt);
-            neighbor_node->node_state = NodeStateEnum::IN_OPEN_LIST;
+            neighbor_node->node_state = AStarNode::NodeStateEnum::IN_OPEN_LIST;
             open_list_.push(neighbor_node);
             expanded_nodes_.insert(neighbor_node->position, neighbor_node);
             if (use_node_num_ >= allocated_node_num_) {
@@ -157,11 +151,11 @@ int Astar::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
   return NO_PATH_FOUND;
 }
 
-double Astar::getEuclHeu(Eigen::Vector3d x1, Eigen::Vector3d x2) {
+double AStar::getEuclHeu(Eigen::Vector3d x1, Eigen::Vector3d x2) {
   return tie_breaker_ * (x1 - x2).norm();
 }
 
-double Astar::getDiagonalHeu(Eigen::Vector3d x1, Eigen::Vector3d x2) {
+double AStar::getDiagonalHeu(Eigen::Vector3d x1, Eigen::Vector3d x2) {
   double dx = std::abs(x1(0) - x2(0));
   double dy = std::abs(x1(1) - x2(1));
   double dz = std::abs(x1(2) - x2(2));
@@ -170,7 +164,7 @@ double Astar::getDiagonalHeu(Eigen::Vector3d x1, Eigen::Vector3d x2) {
   return tie_breaker_ * h;
 }
 
-// Eigen::Vector3i Astar::posToIndex(Eigen::Vector3d pos) {
+// Eigen::Vector3i AStar::posToIndex(Eigen::Vector3d pos) {
 //   Eigen::Vector3i index;
 //   index(0) =  std::floor((pos(0) - origin_(0)) * inv_resolution_); // fix bug
 //   index(1) =  std::floor((pos(1) - origin_(1)) * inv_resolution_);
@@ -178,9 +172,9 @@ double Astar::getDiagonalHeu(Eigen::Vector3d x1, Eigen::Vector3d x2) {
 //   return index;
 // }
 
-void Astar::retrievePath(PathNodePtr end_node,
+void AStar::retrievePath(AStarNode* end_node,
                          std::vector<Eigen::Vector3d>& path) {
-  PathNodePtr current_node = end_node;
+  AStarNode* current_node = end_node;
   while (current_node->parent != nullptr) {
     path.push_back(current_node->position);
     current_node = current_node->parent;
@@ -189,24 +183,24 @@ void Astar::retrievePath(PathNodePtr end_node,
   std::reverse(path.begin(), path.end());
 }
 
-void Astar::setGridMap(GridMap::Ptr& grid_map) { this->grid_map_ = grid_map; }
+void AStar::setGridMap(GridMap::Ptr& grid_map) { this->grid_map_ = grid_map; }
 
-void Astar::reset() {
+void AStar::reset() {
   this->expanded_nodes_.clear();
   this->close_list_.clear();
   this->path_.clear();
 
-  std::priority_queue<PathNodePtr, std::vector<PathNodePtr>, NodeComparator>
+  std::priority_queue<AStarNode*, std::vector<AStarNode*>, AStarNodeComparator>
       empty_queue;
   this->open_list_.swap(empty_queue);
 
   use_node_num_ = 0;
   for (int i = 0; i < allocated_node_num_; i++) {
-    PathNodePtr node = path_node_pool_[i];
+    AStarNode* node = path_node_pool_[i];
     node->parent = nullptr;
     node->g_cost = std::numeric_limits<double>::infinity();
     node->f_cost = std::numeric_limits<double>::infinity();
-    node->node_state = NodeStateEnum::NOT_EXPANDED;
+    node->node_state = AStarNode::NodeStateEnum::NOT_EXPANDED;
   }
 }
 

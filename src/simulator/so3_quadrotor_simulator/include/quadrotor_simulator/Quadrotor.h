@@ -1,7 +1,7 @@
 #ifndef __QUADROTOR_SIMULATOR_QUADROTOR_H__
 #define __QUADROTOR_SIMULATOR_QUADROTOR_H__
 
-#include <Eigen/Core>
+#include <Eigen/Eigen>
 #include <boost/array.hpp>
 
 namespace QuadrotorSimulator {

@@ -7,7 +7,6 @@
 #include <vector>
 #include <ctime>
 #include <iostream>
-// #include <Eigen/Eigen>
 
 #include "device_image.cuh"
 #include "cuda_exception.cuh"

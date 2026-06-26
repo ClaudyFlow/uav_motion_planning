@@ -1,5 +1,14 @@
+#pragma region include
+#pragma region include::project
 #include "path_searching/rrt.hh"
-#include "plan_env/grid_map.hh"
+#pragma endregion include::project
+#pragma region include::third
+
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "test_rrt_node");

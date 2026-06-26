@@ -6,7 +6,6 @@
 #include <tf/tf.h>
 
 #include <armadillo>
-#include <iostream>
 
 using namespace std;
 

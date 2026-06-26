@@ -4,9 +4,6 @@
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 #include <so3_disturbance_generator/DisturbanceUIConfig.h>
-#include <string.h>
-
-#include <iostream>
 
 #include "pose_utils.h"
 

@@ -1,16 +1,16 @@
 #pragma region include
-#pragma region include::header
+#pragma region include_header
 #include "path_searching/rrt.hh"
-#pragma endregion include::header
-#pragma region include::project
+#pragma endregion include_header
+#pragma region include_project
 
-#pragma endregion include::project
-#pragma region include::third
+#pragma endregion include_project
+#pragma region include_third
 
-#pragma endregion include::third
-#pragma region include::standard
-#include <limits>
-#pragma endregion include::standard
+#pragma endregion include_third
+#pragma region include_standard
+
+#pragma endregion include_standard
 #pragma endregion include
 
 namespace path_searching {
@@ -29,16 +29,16 @@ void RRT::setGridMap(GridMap::Ptr& grid_map) { this->grid_map_ = grid_map; }
 void RRT::getWholeTree(
     std::vector<Eigen::Vector3d>& vertices,
     std::vector<std::pair<Eigen::Vector3d, Eigen::Vector3d>>& edges) {
-  RRTPathNodePtr start_node = path_node_pool_[0];
+  RRTNode* start_node = path_node_pool_[0];
   vertices.push_back(start_node->position);
   // bfs to retrieve whole tree， use queue data structure
-  std::queue<RRTPathNodePtr> bfs_queue;
+  std::queue<RRTNode*> bfs_queue;
   bfs_queue.push(start_node);
   while (!bfs_queue.empty()) {
-    RRTPathNodePtr curr_node = bfs_queue.front();
+    RRTNode* curr_node = bfs_queue.front();
     bfs_queue.pop();
     if (curr_node->children.empty()) continue;
-    for (RRTPathNodePtr child : curr_node->children) {
+    for (RRTNode* child : curr_node->children) {
       // check if my child's child is me
       assert(std::find(child->children.begin(), child->children.end(),
                        curr_node) == child->children.end());
@@ -57,7 +57,7 @@ void RRT::init() {
   // pre-allocate memory for kdtree nodes
   path_node_pool_.resize(max_tree_node_num_);
   for (int i = 0; i < max_tree_node_num_; i++) {
-    path_node_pool_[i] = new RRTPathNode();
+    path_node_pool_[i] = new RRTNode();
   }
 
   // set up occupancy grid
@@ -73,7 +73,7 @@ void RRT::reset() {
   kd_clear(kdtree_);
 
   for (int i = 0; i < max_tree_node_num_; i++) {
-    RRTPathNodePtr node = path_node_pool_[i];
+    RRTNode* node = path_node_pool_[i];
     node->children.clear();
     node->parent = NULL;
     node->g_cost = std::numeric_limits<double>::infinity();
@@ -114,9 +114,8 @@ bool RRT::isCollisionFree(Eigen::Vector3d from, Eigen::Vector3d to,
   return true;
 }
 
-void RRT::retrievePath(RRTPathNodePtr end_node,
-                       std::vector<Eigen::Vector3d>& path) {
-  RRTPathNodePtr node = end_node;
+void RRT::retrievePath(RRTNode* end_node, std::vector<Eigen::Vector3d>& path) {
+  RRTNode* node = end_node;
   while (node->parent != NULL) {
     path.push_back(node->position);
     node = node->parent;
@@ -129,7 +128,7 @@ int RRT::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
                 std::vector<Eigen::Vector3d>& path) {
   // insert start_pt into kdtree
   ros::Time start_time = ros::Time::now();
-  RRTPathNodePtr start_node = path_node_pool_[use_node_num_];
+  RRTNode* start_node = path_node_pool_[use_node_num_];
   start_node->position = start_pt;
   start_node->g_cost = 0;
   start_node->parent = NULL;
@@ -144,8 +143,8 @@ int RRT::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
     }
     Eigen::Vector3d x_rand = getRandomNode();
     kdres* nearest_tree_node = kd_nearest(kdtree_, x_rand.data());
-    RRTPathNodePtr nearest_node =
-        static_cast<RRTPathNode*>(kd_res_item_data(nearest_tree_node));
+    RRTNode* nearest_node =
+        static_cast<RRTNode*>(kd_res_item_data(nearest_tree_node));
     // deallocate nearest_tree_node
     kd_res_free(nearest_tree_node);
     Eigen::Vector3d x_near = nearest_node->position;
@@ -153,7 +152,7 @@ int RRT::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
     // check if x_near to x_new is collision free
     if (isCollisionFree(x_near, x_new, resolution_)) {
       // insert x_new into rrt tree
-      RRTPathNodePtr x_new_node = path_node_pool_[use_node_num_];
+      RRTNode* x_new_node = path_node_pool_[use_node_num_];
       x_new_node->position = x_new;
       x_new_node->g_cost = nearest_node->g_cost + (x_new - x_near).norm();
       x_new_node->parent = nearest_node;
@@ -164,7 +163,7 @@ int RRT::search(Eigen::Vector3d start_pt, Eigen::Vector3d end_pt,
       // check if x_new is close to end point
       if ((x_new - end_pt).norm() < search_radius_) {
         if (isCollisionFree(x_new, end_pt, resolution_)) {
-          RRTPathNodePtr end_node = path_node_pool_[use_node_num_];
+          RRTNode* end_node = path_node_pool_[use_node_num_];
           use_node_num_++;
           end_node->position = end_pt;
           end_node->g_cost = x_new_node->g_cost + (end_pt - x_new).norm();

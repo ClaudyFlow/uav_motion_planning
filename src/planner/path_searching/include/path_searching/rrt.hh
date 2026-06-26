@@ -2,45 +2,42 @@
 #define SRC_PLANNER_PATH_SEARCHING_INCLUDE_PATH_SEARCHING_RRT
 
 #pragma region include
-#pragma region include::project
+#pragma region include_project
 #include "kdtree/kdtree.hh"
 #include "plan_env/grid_map.hh"
-#pragma endregion include::project
-#pragma region include::third
-#include <ros/ros.h>
+#pragma endregion include_project
+#pragma region include_third
 
-#include <Eigen/Eigen>
-#pragma endregion include::third
-#pragma region include::standard
+#pragma endregion include_third
+#pragma region include_standard
 #include <queue>
 #include <random>
-#pragma endregion include::standard
+#pragma endregion include_standard
 #pragma endregion include
 
 namespace path_searching {
 
-class RRTPathNode {
+class RRTNode {
  public:
   Eigen::Vector3d position;
-  double g_cost;                       // for total_cost
-  RRTPathNode* parent;                 // for retrieve path
-  std::vector<RRTPathNode*> children;  // for get whole tree
+  double g_cost;                   // for total_cost
+  RRTNode* parent;                 // for retrieve path
+  std::vector<RRTNode*> children;  // for get whole tree
 
-  RRTPathNode() {
+  RRTNode() {
     g_cost = std::numeric_limits<double>::infinity();
     parent = nullptr;
   }
 
-  ~RRTPathNode() {}
+  ~RRTNode() = default;
 
-};  // class PathNode
-typedef RRTPathNode* RRTPathNodePtr;
+};  // class RRTNode
 
 class RRT {
  private:
   /* main data structure */
   kdtree* kdtree_;
-  std::vector<RRTPathNodePtr> path_node_pool_;
+  std::vector<RRTNode*> path_node_pool_;
 
   /* main search parameters */
   int max_tree_node_num_;
@@ -64,7 +61,7 @@ class RRT {
                        double step_length);
   bool isCollisionFree(Eigen::Vector3d from, Eigen::Vector3d to,
                        double map_resolution);
-  void retrievePath(RRTPathNodePtr node, std::vector<Eigen::Vector3d>& path);
+  void retrievePath(RRTNode* node, std::vector<Eigen::Vector3d>& path);
 
  public:
   /* main interface */

@@ -2,15 +2,9 @@
 #define SRC_PLANNER_PLAN_ENV_INCLUDE_PLAN_ENV_RAYCAST
 
 #pragma region include
-#pragma region include::project
-
-#pragma endregion include::project
-#pragma region include::third
+#pragma region include_third
 #include <Eigen/Eigen>
-#pragma endregion include::third
-#pragma region include::standard
-#include <vector>
-#pragma endregion include::standard
+#pragma endregion include_third
 #pragma endregion include
 
 double signum(double x);

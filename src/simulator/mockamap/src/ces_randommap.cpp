@@ -9,20 +9,13 @@
 #include <pcl/point_types.h>
 #include <pcl/search/kdtree.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <ros/console.h>
-#include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sys/time.h>
 #include <time.h>
 
 #include <Eigen/Eigen>
-#include <Eigen/SVD>
-#include <iostream>
 #include <pcl/search/impl/kdtree.hpp>
 #include <random>
-
-#include "visualization_msgs/Marker.h"
-#include "visualization_msgs/MarkerArray.h"
 
 //! @todo historical above
 #include "maps.hpp"

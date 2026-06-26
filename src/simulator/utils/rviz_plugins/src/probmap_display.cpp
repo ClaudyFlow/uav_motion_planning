@@ -34,7 +34,6 @@
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreSceneNode.h>
 #include <OGRE/OgreTextureManager.h>
-#include <ros/ros.h>
 #include <tf/transform_listener.h>
 
 #include <boost/bind.hpp>

@@ -1,4 +1,17 @@
-#include <traj_optimization/minimum_control.h>
+#pragma region include
+#pragma region include::header
+#include "traj_optimization/minimum_control.hh"
+#pragma endregion include::header
+#pragma region include::project
+
+#pragma endregion include::project
+#pragma region include::third
+
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
 
 namespace traj_optimization {
 void MinimumControl::getHessian(Eigen::VectorXd& time_vec) {

@@ -1,8 +1,5 @@
 #include <quadrotor_msgs/PositionCommand.h>
 #include <ros/ros.h>
-
-#include <Eigen/Eigen>
-
 int main(int argc, char** argv) {
   ros::init(argc, argv, "quad_sim_example");
   ros::NodeHandle nh("~");

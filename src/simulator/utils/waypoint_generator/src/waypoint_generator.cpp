@@ -8,9 +8,7 @@
 
 #include <boost/format.hpp>
 #include <deque>
-#include <eigen3/Eigen/Dense>
-#include <iostream>
-#include <vector>
+#include <eigen3/Eigen/Eigen>
 
 #include "sample_waypoints.h"
 

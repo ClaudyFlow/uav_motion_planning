@@ -7,13 +7,12 @@
 //  hughes.lloyd@gmail.com
 //
 
-#ifndef CERES_EXTENSIONS_H
-#define CERES_EXTENSIONS_H
+#ifndef SRC_SIMULATOR_LOCAL_SENSING_SRC_CERES_EXTENSIONS
+#define SRC_SIMULATOR_LOCAL_SENSING_SRC_CERES_EXTENSIONS
 
-#include <ceres/local_parameterization.h>
-#include <ceres/rotation.h>
+#include <ceres/ceres.h>
 
-#include <Eigen/Core>
+#include <Eigen/Eigen>
 
 namespace ceres_ext {
 
@@ -175,4 +174,4 @@ inline void EigenQuaternionProduct(const T z[4], const T w[4], T zw[4]) {
 
 }  // namespace ceres_ext
 
-#endif
+#endif /* SRC_SIMULATOR_LOCAL_SENSING_SRC_CERES_EXTENSIONS */

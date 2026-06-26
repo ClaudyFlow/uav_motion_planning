@@ -4,15 +4,12 @@
 // #include <pcl/search/kdtree.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Vector3.h>
-#include <math.h>
 #include <nav_msgs/Odometry.h>
 #include <pcl/kdtree/kdtree_flann.h>
-#include <ros/console.h>
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 
 #include <Eigen/Eigen>
-#include <iostream>
 #include <random>
 
 using namespace std;

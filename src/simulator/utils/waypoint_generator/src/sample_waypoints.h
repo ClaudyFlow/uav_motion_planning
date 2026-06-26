@@ -2,7 +2,6 @@
 #define SAMPLE_WAYPOINTS_H
 
 #include <nav_msgs/Path.h>
-#include <ros/ros.h>
 #include <tf/tf.h>
 
 nav_msgs::Path point() {

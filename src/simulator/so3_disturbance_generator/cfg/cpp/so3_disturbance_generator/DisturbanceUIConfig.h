@@ -52,10 +52,9 @@
 #include <dynamic_reconfigure/ParamDescription.h>
 #include <dynamic_reconfigure/config_init_mutex.h>
 #include <dynamic_reconfigure/config_tools.h>
-#include <ros/node_handle.h>
+#include <ros/ros.h>
 
 #include <boost/any.hpp>
-#include <limits>
 
 namespace so3_disturbance_generator {
 class DisturbanceUIConfigStatics;

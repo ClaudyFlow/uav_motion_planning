@@ -1,4 +1,3 @@
-#include <ros/ros.h>
 #include <so3_control/SO3Control.h>
 
 #include <iostream>

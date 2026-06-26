@@ -1,7 +1,3 @@
-#include <string.h>
-
-#include <iostream>
-
 #include "armadillo"
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/PoseWithCovarianceStamped.h"
@@ -9,7 +5,7 @@
 #include "nav_msgs/Path.h"
 #include "pose_utils.h"
 #include "quadrotor_msgs/PositionCommand.h"
-#include "ros/ros.h"
+#include <ros/ros.h>
 #include "sensor_msgs/Range.h"
 #include "tf/transform_broadcaster.h"
 #include "visualization_msgs/Marker.h"

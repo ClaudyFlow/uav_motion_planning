@@ -1,9 +1,7 @@
-#include <math.h>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 
-#include <Eigen/Dense>
-#include <iostream>
+#include <Eigen/Eigen>
 #include <random>
 
 #include "quadrotor_msgs/PositionCommand.h"

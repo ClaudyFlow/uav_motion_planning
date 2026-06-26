@@ -2,7 +2,7 @@
 
 #include <quadrotor_msgs/comm_types.h>
 
-#include <Eigen/Geometry>
+#include <Eigen/Eigen>
 
 namespace quadrotor_msgs {
 

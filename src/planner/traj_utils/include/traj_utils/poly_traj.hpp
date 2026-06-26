@@ -2,7 +2,6 @@
 #define _POLY_TRAJ_HPP_
 
 #include <Eigen/Eigen>
-#include <vector>
 
 using std::vector;
 

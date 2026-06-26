@@ -1,4 +1,18 @@
+#pragma region include
+#pragma region include::header
 #include "plan_env/grid_map.hh"
+#pragma endregion include::header
+#pragma region include::project
+#include "plan_env/raycast.hh"
+#pragma endregion include::project
+#pragma region include::third
+
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
+
 
 // #define current_img_ md_.depth_image_[image_cnt_ & 1]
 // #define last_img_ md_.depth_image_[!(image_cnt_ & 1)]

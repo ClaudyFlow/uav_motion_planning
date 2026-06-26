@@ -28,22 +28,22 @@ OF SUCH DAMAGE.
  */
 
 #pragma region include
-#pragma region include::header
+#pragma region include_header
 #include "kdtree/kdtree.hh"
-#pragma endregion include::header
-#pragma region include::project
+#pragma endregion include_header
+#pragma region include_project
 
-#pragma endregion include::project
-#pragma region include::third
+#pragma endregion include_project
+#pragma region include_third
 
-#pragma endregion include::third
-#pragma region include::standard
+#pragma endregion include_third
+#pragma region include_standard
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <thread>
-#pragma endregion include::standard
+#pragma endregion include_standard
 #pragma endregion include
 
 #define SQ(x) ((x) * (x))

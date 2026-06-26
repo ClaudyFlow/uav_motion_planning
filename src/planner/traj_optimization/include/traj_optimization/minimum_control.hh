@@ -1,11 +1,19 @@
-#ifndef MINIMUM_CONTROL_H_
-#define MINIMUM_CONTROL_H_
+#ifndef SRC_PLANNER_TRAJ_OPTIMIZATION_INCLUDE_TRAJ_OPTIMIZATION_MINIMUM_CONTROL
+#define SRC_PLANNER_TRAJ_OPTIMIZATION_INCLUDE_TRAJ_OPTIMIZATION_MINIMUM_CONTROL
 
+
+#pragma region include
+#pragma region include::project
+
+#pragma endregion include::project
+#pragma region include::third
 #include <OsqpEigen/OsqpEigen.h>
-#include <ros/ros.h>
-#include <visualization_msgs/Marker.h>
-
 #include <Eigen/Eigen>
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
 
 namespace traj_optimization {
 class MinimumControl {
@@ -46,4 +54,4 @@ class MinimumControl {
 
 }  // namespace traj_optimization
 
-#endif  // MINIMUM_CONTROL_H_
+#endif /* SRC_PLANNER_TRAJ_OPTIMIZATION_INCLUDE_TRAJ_OPTIMIZATION_MINIMUM_CONTROL */

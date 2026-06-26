@@ -9,12 +9,10 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 
-#include <Eigen/Dense>
+#include <Eigen/Eigen>
 #include <fstream>
-#include <iostream>
 #include <pcl/search/impl/kdtree.hpp>
-#include <string>
-#include <vector>
+
 
 using namespace std;
 using namespace Eigen;

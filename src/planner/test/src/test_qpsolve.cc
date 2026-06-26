@@ -1,4 +1,14 @@
-#include <traj_optimization/minimum_control.h>
+#pragma region include
+#pragma region include::project
+#include "traj_optimization/minimum_control.hh"
+#pragma endregion include::project
+#pragma region include::third
+#include <ros/ros.h>
+#pragma endregion include::third
+#pragma region include::standard
+
+#pragma endregion include::standard
+#pragma endregion include
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "test_qp_solve");

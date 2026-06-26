@@ -1,10 +1,8 @@
 #include "maps.hpp"
 
-#include <Eigen/Core>
-#include <algorithm>
+#include <Eigen/Eigen>
 #include <iostream>
 #include <random>
-#include <vector>
 
 #include "perlinnoise.hpp"
 

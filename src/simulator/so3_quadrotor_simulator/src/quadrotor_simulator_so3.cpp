@@ -5,7 +5,7 @@
 #include <sensor_msgs/Imu.h>
 #include <uav_utils/geometry_utils.h>
 
-#include <Eigen/Geometry>
+#include <Eigen/Eigen>
 
 typedef struct _Control {
   double rpm[4];
